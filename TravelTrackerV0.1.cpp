@@ -13,6 +13,7 @@ int main(){
     cin >> preco;
 
     total_gasto += preco;
+    cout << "Item: " << item << endl;
     cout << "Total Gasto: " << total_gasto << endl;
 
     return 0;
