@@ -15,6 +15,6 @@ int main(){
     total_gasto += preco;
     cout << "Item: " << item << endl;
     cout << "Total Gasto: " << total_gasto << endl;
-
+    // linha adicionada para testes
     return 0;
 }
