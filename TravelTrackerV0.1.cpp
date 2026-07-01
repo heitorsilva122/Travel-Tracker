@@ -16,5 +16,6 @@ int main(){
     cout << "Item: " << item << endl;
     cout << "Total Gasto: " << total_gasto << endl;
     // linha adicionada para testes
+    // aqui eu fiz uma mudança na outra branch
     return 0;
 }
