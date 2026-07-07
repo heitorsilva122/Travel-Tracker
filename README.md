@@ -1,5 +1,5 @@
 # Travel Tracker
-Um projeto pessoal feito em Python para facilitar o planejamento financeiro em viagens internacionais. o Projeto foi inicialmente pensado para ajudar com viagens para o Japão, mas no futuro sera adaptado para funcionar com outros países
+Um projeto pessoal feito em Python para facilitar o planejamento financeiro em viagens internacionais. O projeto foi inicialmente pensado para ajudar com viagens para o Japão, mas no futuro sera adaptado para funcionar com outros países
 
 ## Funções presentes no momento:
 * Cadastro de itens de importação (itens que serão trazidos para o Brasil)
