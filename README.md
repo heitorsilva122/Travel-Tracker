@@ -4,6 +4,9 @@ Um projeto pessoal feito em Python para facilitar o planejamento financeiro em v
 ## Funções presentes no momento:
 * Cadastro de itens de importação (itens que serão trazidos para o Brasil)
 * Cadastro de itens de consumo (hospedagem, comida, transporte, etc)
+* Pesquisa de itens
+* Remoção de itens das listas de consumo e importação
+* Edição de iten das lista de consumo e importação
 * Listagem de todos os itens cadastrados
 * Verificação de quanto ainda pode ser comprado para importação
 * Calculo automatico dos gastos em ienes, dolares e reais
