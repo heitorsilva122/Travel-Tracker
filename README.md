@@ -9,6 +9,7 @@ Um projeto pessoal feito em Python para facilitar o planejamento financeiro em v
 * Edição de iten das lista de consumo e importação
 * Listagem de todos os itens cadastrados
 * Verificação de quanto ainda pode ser comprado para importação
+* Verificação de quanto ja foi gasto até o momento
 * Calculo automatico dos gastos em ienes, dolares e reais
 * Exibe a cotação atual
 
