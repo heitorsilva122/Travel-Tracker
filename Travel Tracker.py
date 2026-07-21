@@ -1,9 +1,31 @@
+import json
 COTACAO_IENE_DOLAR = 0.00620644
 COTACAO_IENE_REAL = 0.032206
 LIMITE_PARA_IMPORTAR = 1000
 rodando = True
 lista_importacao = []
 lista_consumo = []
+
+
+def carregar_arquivo():
+    global lista_importacao, lista_consumo
+
+    try:
+        with open("dados.json", "r", encoding="utf-8") as arquivo:
+            dados = json.load(arquivo)
+            lista_importacao = dados["importacao"]
+            lista_consumo = dados["consumo"]
+    except FileNotFoundError:
+        lista_importacao = []
+        lista_consumo = []
+
+def salvar_arquivo():
+    dados = {
+        "importacao": lista_importacao,
+        "consumo": lista_consumo
+    }
+    with open("dados.json", "w", encoding="utf-8") as arquivo:
+        json.dump(dados, arquivo, indent=4, ensure_ascii=False)
 
 def ler_sim_nao():
     opcao = ler_item("")
@@ -14,7 +36,7 @@ def ler_sim_nao():
     return opcao
 
 
-def validar_min_max(min, max, mensagem = "Escolha uma opção: "):
+def validar_min_max(min, max, mensagem="Escolha uma opção: "):
     opcao = ler_inteiro(mensagem)
     while opcao > max or opcao < min:
         print("\nOpção inválida\n")
@@ -153,9 +175,9 @@ def adicionar_importacao():
                 "preco_real": preco_real
             }
             lista_importacao.append(dic_importacao)
+            salvar_arquivo()
         else:
-            print(
-                "Esse item ultrapassa o limite de US$1000 e não foi adicionado à lista\n")
+            print("Esse item ultrapassa o limite de US$1000 e não foi adicionado à lista\n")
 
 
 def adicionar_consumo():
@@ -173,6 +195,7 @@ def adicionar_consumo():
             "preco_real": preco_real
         }
         lista_consumo.append(dic_consumo)
+        salvar_arquivo()
 
 
 def pesquisar_item():
@@ -204,6 +227,7 @@ def remover_item():
         i = achar_indice(lista_importacao, item)
         if i != -1:
             lista_importacao.pop(i)
+            salvar_arquivo()
             print(f"\n{item} removido com sucesso da lista de importação")
         else:
             print(f"\n{item} não foi encontrado")
@@ -212,6 +236,7 @@ def remover_item():
         i = achar_indice(lista_consumo, item)
         if i != -1:
             lista_consumo.pop(i)
+            salvar_arquivo()
             print(f"\n{item} removido com sucesso da lista de consumo")
         else:
             print(f"\n{item} não foi encontrado")
@@ -236,14 +261,15 @@ def editar_item():
                 lista_importacao[i]["preco_iene"] = preco_novo
                 lista_importacao[i]["preco_dolar"] = preco_novo_dolar
                 lista_importacao[i]["preco_real"] = preco_novo_real
-                print(
-                    f"\nO preço de {item} foi alterado para ¥{preco_novo:.0f} com sucesso da lista de importação")
+                salvar_arquivo()
+                print(f"\nO preço de {item} foi alterado para ¥{preco_novo:.0f} com sucesso da lista de importação")
             else:
                 print("\nO novo preço ultrapassa os US$1000")
                 print("Deseja remover esse item? (s/n) ")
                 remov = ler_sim_nao()
                 if remov == "s":
                     remover_importacao_por_indice(i)
+                    salvar_arquivo()
                 elif remov == "n":
                     print("O preço do item não foi removido e nem alterado")
         else:
@@ -257,8 +283,8 @@ def editar_item():
             lista_consumo[i]["preco_iene"] = preco_novo
             preco_novo_real = converter_iene_real(preco_novo)
             lista_consumo[i]["preco_real"] = preco_novo_real
-            print(
-                f"\nO preço de {item} foi alterado para ¥{preco_novo} com sucesso da lista de consumo")
+            salvar_arquivo()
+            print(f"\nO preço de {item} foi alterado para ¥{preco_novo} com sucesso da lista de consumo")
         else:
             print(f"\n{item} não foi encontrado")
     pausa_menu()
@@ -269,7 +295,7 @@ def listar_itens():
     print("         ITENS PARA IMPORTAR PARA O BRASIL")
     print("=" * 50)
     if not lista_importacao:
-        print("\nNenhum item de importação cadastrado\n")
+        print("\nNenhum item de importação cadastrado")
     else:
         for importado in lista_importacao:
             print(f"\nVocê comprou {importado['item']}, e custou:")
@@ -277,6 +303,7 @@ def listar_itens():
             print(f"R${importado['preco_real']:.2f}")
             print(f"US${importado['preco_dolar']:.2f}")
 
+    print()
     print("=" * 50)
     print("            ITENS DE CONSUMO NO JAPÃO")
     print("=" * 50)
@@ -292,8 +319,7 @@ def listar_itens():
 
 def saldo_restante_importacao():
     saldo_restante = calcular_saldo_importacao()
-    print(
-        f"Você ainda pode gastar US${saldo_restante:.2f}, ou ¥{saldo_restante / COTACAO_IENE_DOLAR:.0f}")
+    print(f"Você ainda pode gastar US${saldo_restante:.2f}, ou ¥{saldo_restante / COTACAO_IENE_DOLAR:.0f}")
     pausa_menu()
 
 
@@ -342,8 +368,7 @@ def verificar_total_gasto():
         print("=" * 50)
         print(f"\nTotal gasto em ¥{gasto_total_iene:.0f}")
         print(f"\nTotal gasto em R${gasto_total_real:.2f}")
-        print(
-            f"\nTotal gasto em US${gasto_total_dolar_imp:.2f} (apenas os preços de importação foram considerados)")
+        print(f"\nTotal gasto em US${gasto_total_dolar_imp:.2f} (apenas os preços de importação foram considerados)")
 
     pausa_menu()
 
@@ -354,8 +379,7 @@ def cotacao_atual():
     print("=" * 50)
     print("\nA cotação atual de ¥ para US$ é de", COTACAO_IENE_DOLAR)
     print(f"¥100 é igual a US${COTACAO_IENE_DOLAR * 100:.2f}")
-    print(
-        f"\nVocê pode gastar até aproximadamente ¥{LIMITE_PARA_IMPORTAR / COTACAO_IENE_DOLAR:.0f} em produtos para levar para o Brasil\n")
+    print(f"\nVocê pode gastar até aproximadamente ¥{LIMITE_PARA_IMPORTAR/COTACAO_IENE_DOLAR:.0f} em produtos para levar para o Brasil\n")
 
     print("=" * 50)
     print("             COTAÇÃO ¥ ---> R$")
@@ -364,6 +388,7 @@ def cotacao_atual():
     print(f"¥100 é igual a R${COTACAO_IENE_REAL * 100:.2f}")
     pausa_menu()
 
+carregar_arquivo()
 
 while (rodando):
     opcao = menu()
